@@ -1,0 +1,29 @@
+
+hive> use training_432575;
+hive> set hive.cli.print.current.db=true;
+hive (training_432575)> create table cust(cust_id bigint,  firstname string,  lastname string,  age int, profession string )row format delimited fiel
+ds terminated by ',' stored as textfile;                                                                                                            
+Here filename is changed to cust from custs
+hive (training_432575)> load data local inpath "cust.txt" overwrite into table cust;                                                                
+Loading data to table training_432575.cust                                                                                                          
+OK                                                                                                                                                  
+Time taken: 1.355 seconds                                                                                                                           
+
+hive (training_432575)> select profession,count(cust_id) as Count from cust group by profession limit 20;
+hive (training_432575)> create table sales (txn_id bigint,txn_date string, cust_id bigint,  amount double,  category string,  product string,  city s
+tring, state string,  spendby string)row format delimited fields terminated by ',' stored as textfile;                                              
+OK                                                                                                                                                  
+Time taken: 0.486 seconds                                 
+Here filename is changed to txns1 from sales
+                   
+                                                                       
+hive (training_432575)> load data local inpath 'sales.txt' overwrite into table sales;                                                              
+Loading data to table training_432575.sales                                                                                                         
+OK                                                                                                                                                  
+Time taken: 1.529 seconds                                                                                                                           
+hive (training_432575)> select product,sum(amount) as Total_Sales  from sales group by product order by Total_Sales desc limit 10;
+                                                                                                                             
+
+
+hive (training_432575)>  create table sales_part (txn_id bigint,txn_date string, cust_id bigint,  amount double, product string,  city string, state string,  spendby string)partitioned by (category string) row format delimited fields terminated by ',' stored as textfile;                          
+OK                                                                                                                                                 Time taken: 0.129 seconds                                                
