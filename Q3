@@ -1,0 +1,14 @@
+from pyspark.sql.types import StructType, StringType, IntegerType, DoubleType, LongType
+
+>>> schema1=StructType().add("Year",IntegerType(),"True").add("quater",IntegerType(),"True").add("Arps",DoubleType(),"True").add("Noofseats",LongType
+(),"True")
+
+
+data=sc.read.format("csv").option("header","False").schema(schema1).load(" /user/bigcdac432575/exam/airline.csv")
+data.registerTempTable("airline")
+df1=spark.sql("select year,noofseats as nos from airline order by nos desc limit 10")
+df1.show()
+df2=spark.sql("select year,sum(Aprs*Noofseats) as nos from airline  group by year order by nos desc limit 1")
+df2.show()
+df3=spark.sql("select year,quater,sum(Aprs*Noofseats) as nos from airline  group by year,quater order by nos desc limit 1")
+df3.show()
